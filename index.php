@@ -1,9 +1,9 @@
 <?php
 
 //$uri = "https://www.googleapis.com/books/v1/volumes?q=".urlencode($_GET['titulo']); 
-$uri = "http://172.18.0.0:3000/api/pokemon/65991a41a2105aa8ce8358b7";
+$uri = "http://44.201.151.176:3000/api/pokemon/659c52eeb4bbf5d725db836e";
 $reqPrefs['http']['method'] = 'GET';
-$reqPrefs['http']['header'] = 'X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTkxOWQzYTIxMDVhYThjZTgzNThiNCIsImVtYWlsIjoibWlxb3RhMkBnbWFpbC5jb20iLCJpYXQiOjE3MDQ1MzI0MzUsImV4cCI6MTcwNDYxODgzNX0.8wPZRUcC54JaJS6Ezlwjt34ZKctjCKePzKuF2E35Efc';
+$reqPrefs['http']['header'] = 'Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWM1MThlYjRiYmY1ZDcyNWRiODM2YiIsImVtYWlsIjoibWlxb3RhMkBnbWFpbC5jb20iLCJpYXQiOjE3MDQ3NDMzMTAsImV4cCI6MTcwNDgyOTcxMH0.sUyX3YVhzY9OEngJdE0QSNb4EuFV8FroISRl7fmt4I8';
 $stream_context = stream_context_create($reqPrefs);
 $resultado = file_get_contents($uri, false, $stream_context);
 
