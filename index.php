@@ -1,15 +1,50 @@
 <?php
 
-//$uri = "https://www.googleapis.com/books/v1/volumes?q=".urlencode($_GET['titulo']); 
-$uri = "http://44.201.151.176:3000/api/pokemon/659c52eeb4bbf5d725db836e";
-$reqPrefs['http']['method'] = 'GET';
-$reqPrefs['http']['header'] = 'Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWM1MThlYjRiYmY1ZDcyNWRiODM2YiIsImVtYWlsIjoibWlxb3RhMkBnbWFpbC5jb20iLCJpYXQiOjE3MDQ3NDMzMTAsImV4cCI6MTcwNDgyOTcxMH0.sUyX3YVhzY9OEngJdE0QSNb4EuFV8FroISRl7fmt4I8';
-$stream_context = stream_context_create($reqPrefs);
-$resultado = file_get_contents($uri, false, $stream_context);
+namespace PokemonPhp;
 
-//Pasar de json a objeto php y recorrer los resultados
-if ($resultado != false) {
-    $respPHP = json_decode($resultado);
+use PokemonPhp\controladores\ApiController;
 
-    var_dump($respPHP);
+session_start();
+//session_destroy();
+
+
+require_once './vendor/autoload.php';
+//Autocargar las clases --------------------------
+spl_autoload_register(function ($class) {
+    //echo substr($class, strpos($class,"\\")+1);
+    $ruta = substr($class, strpos($class, "\\") + 1);
+    $ruta = str_replace("\\", "/", $ruta);
+    include_once "./" . $ruta . ".php";
+});
+
+//ip de aws
+$ip = "54.89.25.137";
+
+//comprobar si hay un token en la sesion
+if (!isset($_SESSION["token"])) {
+
+    if (isset($_REQUEST["accion"])) {
+
+        //comprobar acciones de login y registro
+        if (strcmp($_REQUEST["accion"], "loginForm") == 0) {
+            $body = $_REQUEST;
+
+            ApiController::loginRequest($body, $ip);
+            die;
+        }
+
+        if (strcmp($_REQUEST["accion"], "registerForm") == 0) {
+            $body = $_REQUEST;
+
+            ApiController::registerRequest($body, $ip);
+            die;
+        }
+    }
+
+    ApiController::login();
+    die;
 }
+
+//manejar las peticiones de pokemons
+
+var_dump($_SESSION);
