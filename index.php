@@ -18,7 +18,7 @@ spl_autoload_register(function ($class) {
 });
 
 //ip de aws
-$ip = "54.89.25.137";
+$ip = "34.201.116.250";
 
 //comprobar si hay un token en la sesion
 if (!isset($_SESSION["token"])) {
@@ -47,4 +47,14 @@ if (!isset($_SESSION["token"])) {
 
 //manejar las peticiones de pokemons
 
-var_dump($_SESSION);
+if (isset($_REQUEST["accion"])) {
+    if (strcmp($_REQUEST["accion"], "home") == 0) {
+        ApiController::vistaPrincipal($ip);
+    }
+
+    if (strcmp($_REQUEST["accion"], "logout") == 0) {
+        ApiController::logout();
+    }
+} else {
+    ApiController::vistaPrincipal($ip);
+}

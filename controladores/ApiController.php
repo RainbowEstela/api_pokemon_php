@@ -2,6 +2,7 @@
 
 namespace PokemonPhp\controladores;
 
+use PokemonPhp\vistas\Home;
 use PokemonPhp\vistas\Login;
 
 class ApiController
@@ -13,6 +14,7 @@ class ApiController
         Login::view();
     }
 
+    // GESTIONA PETICIONES DE LOGIN
     public static function loginRequest($request, $ip)
     {
 
@@ -45,6 +47,7 @@ class ApiController
         }
     }
 
+    // GESTIONA PETICIONES DE REGISTRO
     public static function registerRequest($request, $ip)
     {
         $client = new \GuzzleHttp\Client();
@@ -74,5 +77,33 @@ class ApiController
         } else {
             Login::view();
         }
+    }
+
+
+    public static function vistaPrincipal($ip)
+    {
+        $client = new \GuzzleHttp\Client();
+
+        $pokemons = "";
+
+        try {
+            $response = $client->request('GET', 'http://' . $ip . ':3000/api/pokemon', [
+                'headers' => [
+                    'Authorization' => $_SESSION["token"],
+                ],
+            ]);
+
+            $pokemons = json_decode($response->getBody());
+        } catch (\Throwable $th) {
+        }
+
+        Home::view($pokemons);
+    }
+
+    public static function logout()
+    {
+        session_destroy();
+
+        ApiController::login();
     }
 }
