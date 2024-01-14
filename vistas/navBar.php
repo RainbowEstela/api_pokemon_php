@@ -19,9 +19,6 @@
                 <li>
                     <a href="./index.php?accion=createForm" class="text-gray-900 dark:text-white hover:underline">Crear pokemon</a>
                 </li>
-                <li>
-                    <a href="#" class="text-gray-900 dark:text-white hover:underline">Team</a>
-                </li>
             </ul>
         </div>
     </div>
