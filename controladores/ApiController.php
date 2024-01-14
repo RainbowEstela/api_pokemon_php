@@ -2,6 +2,7 @@
 
 namespace PokemonPhp\controladores;
 
+use PokemonPhp\vistas\CreateForm;
 use PokemonPhp\vistas\Detail;
 use PokemonPhp\vistas\Home;
 use PokemonPhp\vistas\Login;
@@ -176,5 +177,28 @@ class ApiController
         }
 
         Detail::view($pokemon);
+    }
+
+    public static function createForm()
+    {
+        CreateForm::view();
+    }
+
+    public static function createPokemon($request, $ip)
+    {
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $response = $client->request('POST', 'http://' . $ip . ':3000/api/pokemon', [
+                'headers' => [
+                    'accept' => 'application/json',
+                    'Authorization' => $_SESSION["token"],
+                ],
+                'form_params' => $request
+            ]);
+        } catch (\Throwable $th) {
+        }
+
+        ApiController::vistaPrincipal($ip);
     }
 }

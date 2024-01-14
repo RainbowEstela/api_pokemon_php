@@ -18,7 +18,7 @@ spl_autoload_register(function ($class) {
 });
 
 //ip de aws
-$ip = "34.203.188.111";
+$ip = "35.153.23.41";
 
 //comprobar si hay un token en la sesion
 if (!isset($_SESSION["token"])) {
@@ -76,6 +76,67 @@ if (isset($_REQUEST["accion"])) {
         $id = $_REQUEST["id"];
 
         ApiController::details($id, $ip);
+    }
+
+    // ACCION SHOW CREATE FORM
+    if (strcmp($_REQUEST["accion"], "createForm") == 0) {
+        ApiController::createForm();
+    }
+
+    // ACCION CREATE POKEMON
+    if (strcmp($_REQUEST["accion"], "createPokemon") == 0) {
+        $data = [
+            "nombre" => $_REQUEST["nombre"],
+            "especie" => $_REQUEST["especie"],
+            "imagen" => $_REQUEST["imagen"],
+            "tipo" => [],
+            "evolucion" => null,
+            "preevolucion" => null,
+            "vida" => intval($_REQUEST["vida"]),
+            "altura" => intval($_REQUEST["altura"]),
+            "peso" => intval($_REQUEST["peso"]),
+            "habilidades" => []
+        ];
+
+        array_push($data["tipo"], $_REQUEST["tipo"]);
+
+        if (isset($_REQUEST["subtipo"])) {
+            array_push($data["tipo"], $_REQUEST["subtipo"]);
+        }
+
+        if ($_REQUEST["evolucion"] != "") {
+            $data["evolucion"] = $_REQUEST["evolucion"];
+        }
+
+        if ($_REQUEST["preevolucion"] != "") {
+            $data["preevolucion"] = $_REQUEST["preevolucion"];
+        }
+
+        $attack1 = [
+            "nombre" => $_REQUEST["attack1"],
+            "damage" => $_REQUEST["damage1"]
+        ];
+        $attack2 = [
+            "nombre" => $_REQUEST["attack2"],
+            "damage" => $_REQUEST["damage2"]
+        ];
+        $attack3 = [
+            "nombre" => $_REQUEST["attack3"],
+            "damage" => $_REQUEST["damage3"]
+        ];
+        $attack4 = [
+            "nombre" => $_REQUEST["attack4"],
+            "damage" => $_REQUEST["damage4"]
+        ];
+
+        array_push($data["habilidades"], $attack1);
+        array_push($data["habilidades"], $attack2);
+        array_push($data["habilidades"], $attack3);
+        array_push($data["habilidades"], $attack4);
+
+
+
+        ApiController::createPokemon($data, $ip);
     }
 } else {
     ApiController::vistaPrincipal($ip);
